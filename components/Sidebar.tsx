@@ -37,7 +37,7 @@ export default function Sidebar({ trending }: Props) {
                     data-test-id="beehiiv-embed"
                     frameBorder="0"
                     scrolling="no"
-                    style={{ margin: 0, borderRadius: '12px', backgroundColor: 'transparent', width: '100%', height: '291px' }}
+                    style={{ margin: 0, borderRadius: '12px', backgroundColor: 'transparent', width: '100%', height: '336px' }}
                 ></iframe>
             </div>
 

@@ -5,9 +5,15 @@ import { useState } from 'react';
 
 // ────────────────────────────────────────────────
 // CONFIGURATION — Lemon Squeezy Payment Links
-const STRIPE_LINKS = {
-    monthly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/7d202de7-e4f8-4eec-a8e9-4fb3a6125543',
-    yearly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/153acb94-ca9f-4d46-b42b-87e0ec75d4c6',
+const PAYMENT_LINKS = {
+    pro: {
+        monthly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/7d202de7-e4f8-4eec-a8e9-4fb3a6125543',
+        yearly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/153acb94-ca9f-4d46-b42b-87e0ec75d4c6',
+    },
+    team: {
+        monthly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/d95ec7ad-d136-4645-82ca-7c47f0397dbc',
+        yearly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/389f6843-9703-4315-86a2-165dc4dcdd67',
+    }
 };
 // ────────────────────────────────────────────────
 
@@ -171,16 +177,9 @@ export default function PremiumPage() {
                                     </Link>
                                 ) : (
                                     <a
-                                        href={key === 'pro' ? STRIPE_LINKS.monthly : STRIPE_LINKS.yearly}
+                                        href={(key === 'pro' || key === 'team') ? PAYMENT_LINKS[key as 'pro' | 'team'][billing] : '#'}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        onClick={(e) => {
-                                            const href = key === 'pro' ? STRIPE_LINKS.monthly : STRIPE_LINKS.yearly;
-                                            if (href.includes('REPLACE_WITH')) {
-                                                e.preventDefault();
-                                                alert('⚠️ Modo de demostración: Este es un enlace de prueba.\n\nFalta configurar el enlace Anual en app/premium/page.tsx');
-                                            }
-                                        }}
                                         style={{ display: 'block', textAlign: 'center' as const, padding: '13px', borderRadius: '10px', background: isPro ? 'linear-gradient(135deg, #00D4FF, #7C3AED)' : 'linear-gradient(135deg, #7C3AED, #4F46E5)', color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: '0.95rem', transition: 'opacity 0.2s' }}
                                     >
                                         {plan.cta} →
@@ -224,7 +223,7 @@ export default function PremiumPage() {
                 <div style={{ textAlign: 'center' as const, marginTop: '4rem', padding: '3rem', background: 'linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,58,237,0.08))', border: '1px solid rgba(0,212,255,0.2)', borderRadius: '20px' }}>
                     <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '0.75rem' }}>Ready to go Pro?</h2>
                     <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '1.75rem', fontSize: '0.95rem' }}>Join thousands of AI professionals who start every day with NexusAI Daily.</p>
-                    <a href={STRIPE_LINKS.monthly} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #00D4FF, #7C3AED)', color: '#fff', fontWeight: 700, fontSize: '1rem', padding: '14px 36px', borderRadius: '12px', textDecoration: 'none' }}>
+                    <a href={PAYMENT_LINKS.pro.monthly} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #00D4FF, #7C3AED)', color: '#fff', fontWeight: 700, fontSize: '1rem', padding: '14px 36px', borderRadius: '12px', textDecoration: 'none' }}>
                         Start Pro — $9/month →
                     </a>
                     <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.78rem', marginTop: '12px' }}>7-day money-back guarantee • No commitment • Cancel anytime</p>

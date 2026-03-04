@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { Article } from '@/lib/rss';
+import Script from 'next/script';
 
 const TOOLS = [
     { emoji: '🤖', name: 'Cursor', desc: 'AI-powered code editor', href: 'https://cursor.sh', tag: 'Try Free' },
@@ -17,27 +17,6 @@ interface Props {
 }
 
 export default function Sidebar({ trending }: Props) {
-    const [email, setEmail] = useState('');
-    // Initialize from localStorage so subscription persists across sessions
-    const [submitted, setSubmitted] = useState(false);
-    const [subscribedEmail, setSubscribedEmail] = useState('');
-
-    useEffect(() => {
-        const saved = localStorage.getItem(LS_KEY);
-        if (saved) {
-            setSubmitted(true);
-            setSubscribedEmail(saved);
-        }
-    }, []);
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (email) {
-            localStorage.setItem(LS_KEY, email);
-            setSubscribedEmail(email);
-            setSubmitted(true);
-        }
-    };
 
     return (
         <aside className="sidebar">
@@ -50,37 +29,16 @@ export default function Sidebar({ trending }: Props) {
                 </div>
             </div>
 
-            {/* Newsletter */}
-            <div className="newsletter-widget">
-                <div className="newsletter-icon">📬</div>
-                <h3 className="newsletter-title">Daily AI Briefing</h3>
-                <p className="newsletter-subtitle">Get the top 5 AI stories delivered every morning. No spam, ever.</p>
-                {submitted ? (
-                    <div style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '1.5rem', marginBottom: '6px' }}>✅</div>
-                        <div style={{ color: '#10B981', fontWeight: 700, fontSize: '0.9rem', marginBottom: '4px' }}>
-                            ¡Ya estás suscrito!
-                        </div>
-                        <div style={{ color: 'rgba(255,255,255,0.5)', fontSize: '0.75rem' }}>
-                            {subscribedEmail}
-                        </div>
-                    </div>
-                ) : (
-                    <form onSubmit={handleSubmit}>
-                        <input
-                            className="newsletter-input"
-                            type="email"
-                            placeholder="your@email.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                        <button className="newsletter-btn" type="submit">
-                            Get Free Briefings →
-                        </button>
-                        <div className="newsletter-privacy">🔒 No spam. Unsubscribe anytime.</div>
-                    </form>
-                )}
+            {/* Newsletter (Beehiiv) */}
+            <div className="newsletter-widget" style={{ padding: 0, overflow: 'hidden', background: 'transparent', border: 'none' }}>
+                <Script src="https://subscribe-forms.beehiiv.com/embed.js" strategy="lazyOnload" />
+                <iframe
+                    src="https://subscribe-forms.beehiiv.com/bab8a6ca-7501-432a-a2a4-e12d2b715ca8"
+                    data-test-id="beehiiv-embed"
+                    frameBorder="0"
+                    scrolling="no"
+                    style={{ margin: 0, borderRadius: '12px', backgroundColor: 'transparent', width: '100%', height: '291px' }}
+                ></iframe>
             </div>
 
             {/* ⭐ Premium Upgrade CTA */}

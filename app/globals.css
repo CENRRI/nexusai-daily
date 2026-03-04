@@ -848,19 +848,18 @@ footer {
 /* ────────────────────────────────────────────────
    Beehiiv Embed Overrides
 ──────────────────────────────────────────────── */
-.newsletter-widget iframe {
-  filter: invert(1) hue-rotate(180deg) brightness(1.2);
-  opacity: 0.95;
-  border-radius: 12px !important;
-  transform: scale(0.92);
-  transform-origin: center center;
-  mix-blend-mode: screen;
-}
-
-/* Adjust the container to center the iframe and remove excess padding if any */
 .newsletter-widget {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
+  width: 100%;
+}
+
+.newsletter-widget iframe {
+  filter: invert(1) hue-rotate(180deg) brightness(1.2);
+  opacity: 0.95;
+  border-radius: 12px !important;
+  width: 100% !important;
+  min-width: 100%;
+  mix-blend-mode: screen;
 }

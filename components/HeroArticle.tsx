@@ -1,5 +1,6 @@
 import { Article } from '@/lib/rss';
 import { formatDistanceToNow } from 'date-fns';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
 interface Props {
@@ -7,11 +8,15 @@ interface Props {
 }
 
 export default function HeroArticle({ article }: Props) {
-    const timeAgo = (() => {
+    const [timeAgo, setTimeAgo] = useState<string>('');
+
+    useEffect(() => {
         try {
-            return formatDistanceToNow(new Date(article.pubDate), { addSuffix: true });
-        } catch { return 'Recently'; }
-    })();
+            setTimeAgo(formatDistanceToNow(new Date(article.pubDate), { addSuffix: true }));
+        } catch {
+            setTimeAgo('Recently');
+        }
+    }, [article.pubDate]);
 
     return (
         <a href={article.link} target="_blank" rel="noopener noreferrer" className="hero-article" style={{ display: 'block' }}>

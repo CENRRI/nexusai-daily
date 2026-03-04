@@ -14,20 +14,23 @@ const LS_KEY = 'nexusai_subscribed_email';
 
 interface Props {
     trending: Article[];
+    userEmail?: string | null;
 }
 
-export default function Sidebar({ trending }: Props) {
+export default function Sidebar({ trending, userEmail }: Props) {
 
     return (
         <aside className="sidebar">
             {/* Ad Banner */}
-            <div className="ad-banner">
-                <div className="ad-label">Advertisement</div>
-                <div className="ad-placeholder">
-                    {/* Google AdSense goes here */}
-                    Google AdSense — 300×90
+            {!userEmail && (
+                <div className="ad-banner">
+                    <div className="ad-label">Advertisement</div>
+                    <div className="ad-placeholder">
+                        {/* Google AdSense goes here */}
+                        Google AdSense — 300×90
+                    </div>
                 </div>
-            </div>
+            )}
 
             {/* Newsletter (Beehiiv) */}
             <div className="newsletter-widget" style={{ padding: 0, overflow: 'hidden', background: 'transparent', border: 'none' }}>
@@ -41,34 +44,36 @@ export default function Sidebar({ trending }: Props) {
                 ></iframe>
             </div>
 
-            {/* ⭐ Premium Upgrade CTA */}
-            <div style={{
-                background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,212,255,0.1))',
-                border: '1px solid rgba(124,58,237,0.4)',
-                borderRadius: '12px',
-                padding: '1.25rem',
-                textAlign: 'center' as const,
-            }}>
-                <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>⭐</div>
-                <div style={{ fontWeight: 800, color: '#FFFFFF', fontSize: '0.95rem', marginBottom: '6px' }}>
-                    Go Pro — $9/month
+            {/* ⭐ Premium Upgrade CTA (Hidden if logged in for now, until full Stripe checks) */}
+            {!userEmail && (
+                <div style={{
+                    background: 'linear-gradient(135deg, rgba(124,58,237,0.2), rgba(0,212,255,0.1))',
+                    border: '1px solid rgba(124,58,237,0.4)',
+                    borderRadius: '12px',
+                    padding: '1.25rem',
+                    textAlign: 'center' as const,
+                }}>
+                    <div style={{ fontSize: '1.4rem', marginBottom: '6px' }}>⭐</div>
+                    <div style={{ fontWeight: 800, color: '#FFFFFF', fontSize: '0.95rem', marginBottom: '6px' }}>
+                        Go Pro — $9/month
+                    </div>
+                    <ul style={{ listStyle: 'none', textAlign: 'left' as const, fontSize: '0.8rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, marginBottom: '1rem' }}>
+                        <li>✓ Unlimited access + No ads</li>
+                        <li>✓ Daily 7am AI briefing email</li>
+                        <li>✓ Breaking news alerts</li>
+                        <li>✓ 2h early access to news</li>
+                    </ul>
+                    <a
+                        href="/login"
+                        style={{ display: 'block', background: 'linear-gradient(135deg, #00D4FF, #7C3AED)', color: '#fff', fontWeight: 700, fontSize: '0.85rem', padding: '10px', borderRadius: '8px', textDecoration: 'none', transition: 'opacity 0.2s' }}
+                    >
+                        View Plans →
+                    </a>
+                    <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', marginTop: '8px' }}>
+                        7-day money-back guarantee
+                    </div>
                 </div>
-                <ul style={{ listStyle: 'none', textAlign: 'left' as const, fontSize: '0.8rem', color: 'rgba(255,255,255,0.65)', lineHeight: 1.8, marginBottom: '1rem' }}>
-                    <li>✓ Unlimited access + No ads</li>
-                    <li>✓ Daily 7am AI briefing email</li>
-                    <li>✓ Breaking news alerts</li>
-                    <li>✓ 2h early access to news</li>
-                </ul>
-                <a
-                    href="/premium"
-                    style={{ display: 'block', background: 'linear-gradient(135deg, #00D4FF, #7C3AED)', color: '#fff', fontWeight: 700, fontSize: '0.85rem', padding: '10px', borderRadius: '8px', textDecoration: 'none', transition: 'opacity 0.2s' }}
-                >
-                    View Plans →
-                </a>
-                <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.3)', marginTop: '8px' }}>
-                    7-day money-back guarantee
-                </div>
-            </div>
+            )}
 
             {/* Trending */}
             <div className="sidebar-widget">
@@ -106,12 +111,14 @@ export default function Sidebar({ trending }: Props) {
             </div>
 
             {/* Square Ad */}
-            <div className="ad-banner">
-                <div className="ad-label">Sponsored</div>
-                <div className="ad-placeholder" style={{ height: '250px' }}>
-                    Google AdSense — 300×250
+            {!userEmail && (
+                <div className="ad-banner">
+                    <div className="ad-label">Sponsored</div>
+                    <div className="ad-placeholder" style={{ height: '250px' }}>
+                        Google AdSense — 300×250
+                    </div>
                 </div>
-            </div>
+            )}
         </aside>
     );
 }

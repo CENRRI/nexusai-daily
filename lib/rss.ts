@@ -76,7 +76,7 @@ function determineCategory(title: string, desc: string): string {
         return 'Startups';
     }
     // Business keywords
-    if (text.match(/business|enterprise|revenue|market|stock|shares|acquisition|ceo|earnings|b2b|corporate/)) {
+    if (text.match(/business|enterprise|revenue|market|stock|shares|acquisition|ceo|earnings|b2b|corporate|investment|profit|economy|industry|executive|board|valuation|ipo|partnership|commercial|workforce|jobs|sales/)) {
         return 'Business';
     }
 

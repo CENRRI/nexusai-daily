@@ -7,7 +7,7 @@ import { useState } from 'react';
 // CONFIGURATION — Lemon Squeezy Payment Links
 const STRIPE_LINKS = {
     monthly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/7d202de7-e4f8-4eec-a8e9-4fb3a6125543',
-    yearly: 'https://buy.stripe.com/REPLACE_WITH_YOUR_YEARLY_LINK', // PENDING
+    yearly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/153acb94-ca9f-4d46-b42b-87e0ec75d4c6',
 };
 // ────────────────────────────────────────────────
 

@@ -4,11 +4,10 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 // ────────────────────────────────────────────────
-// CONFIGURATION — replace with your Stripe Payment Link URLs
-// after creating them at: https://dashboard.stripe.com/payment-links
+// CONFIGURATION — Lemon Squeezy Payment Links
 const STRIPE_LINKS = {
-    monthly: 'https://buy.stripe.com/REPLACE_WITH_YOUR_MONTHLY_LINK',
-    yearly: 'https://buy.stripe.com/REPLACE_WITH_YOUR_YEARLY_LINK',
+    monthly: 'https://ghost-influencer.lemonsqueezy.com/checkout/buy/7d202de7-e4f8-4eec-a8e9-4fb3a6125543',
+    yearly: 'https://buy.stripe.com/REPLACE_WITH_YOUR_YEARLY_LINK', // PENDING
 };
 // ────────────────────────────────────────────────
 
@@ -179,7 +178,7 @@ export default function PremiumPage() {
                                             const href = key === 'pro' ? STRIPE_LINKS.monthly : STRIPE_LINKS.yearly;
                                             if (href.includes('REPLACE_WITH')) {
                                                 e.preventDefault();
-                                                alert('⚠️ Modo de demostración: Este es un enlace de prueba.\n\nPara poder cobrar suscripciones reales, primero debes crear tus "Payment Links" en Stripe.com y actualizar las URL en el archivo de código: app/premium/page.tsx');
+                                                alert('⚠️ Modo de demostración: Este es un enlace de prueba.\n\nFalta configurar el enlace Anual en app/premium/page.tsx');
                                             }
                                         }}
                                         style={{ display: 'block', textAlign: 'center' as const, padding: '13px', borderRadius: '10px', background: isPro ? 'linear-gradient(135deg, #00D4FF, #7C3AED)' : 'linear-gradient(135deg, #7C3AED, #4F46E5)', color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: '0.95rem', transition: 'opacity 0.2s' }}
@@ -225,12 +224,7 @@ export default function PremiumPage() {
                 <div style={{ textAlign: 'center' as const, marginTop: '4rem', padding: '3rem', background: 'linear-gradient(135deg, rgba(0,212,255,0.08), rgba(124,58,237,0.08))', border: '1px solid rgba(0,212,255,0.2)', borderRadius: '20px' }}>
                     <h2 style={{ fontSize: '1.8rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '0.75rem' }}>Ready to go Pro?</h2>
                     <p style={{ color: 'rgba(255,255,255,0.6)', marginBottom: '1.75rem', fontSize: '0.95rem' }}>Join thousands of AI professionals who start every day with NexusAI Daily.</p>
-                    <a href={STRIPE_LINKS.monthly} target="_blank" rel="noopener noreferrer" onClick={(e) => {
-                        if (STRIPE_LINKS.monthly.includes('REPLACE_WITH')) {
-                            e.preventDefault();
-                            alert('⚠️ Modo de demostración: Este es un enlace de prueba.\n\nPara poder cobrar suscripciones reales, primero debes crear tus "Payment Links" en Stripe.com y actualizar las URL en el archivo de código: app/premium/page.tsx');
-                        }
-                    }} style={{ display: 'inline-block', background: 'linear-gradient(135deg, #00D4FF, #7C3AED)', color: '#fff', fontWeight: 700, fontSize: '1rem', padding: '14px 36px', borderRadius: '12px', textDecoration: 'none' }}>
+                    <a href={STRIPE_LINKS.monthly} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', background: 'linear-gradient(135deg, #00D4FF, #7C3AED)', color: '#fff', fontWeight: 700, fontSize: '1rem', padding: '14px 36px', borderRadius: '12px', textDecoration: 'none' }}>
                         Start Pro — $9/month →
                     </a>
                     <p style={{ color: 'rgba(255,255,255,0.3)', fontSize: '0.78rem', marginTop: '12px' }}>7-day money-back guarantee • No commitment • Cancel anytime</p>

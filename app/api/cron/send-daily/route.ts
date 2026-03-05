@@ -57,7 +57,7 @@ export async function GET(request: Request) {
         console.log(`[Cron] Assembling agentic newsletter for ${targetEmail}...`);
 
         const { data, error: sendError } = await resend.emails.send({
-            from: 'NexusAI Daily <onboarding@resend.dev>',
+            from: 'onboarding@resend.dev',
             to: [targetEmail],
             subject: '🚨 Tus 5 noticias clave de IA (Agentic Report) 🤖',
             react: DailyNewsletter({ articles: top5 }) as React.ReactElement,

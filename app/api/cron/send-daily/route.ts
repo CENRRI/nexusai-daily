@@ -19,6 +19,12 @@ export async function GET(request: Request) {
     }
 
     try {
+        // Safe fallback if the RESEND_API_KEY is not yet populated
+        if (!process.env.RESEND_API_KEY) {
+            console.error('RESEND_API_KEY is missing from environment variables.');
+            return NextResponse.json({ error: 'Resend API key missing' }, { status: 500 });
+        }
+
         const resend = new Resend(process.env.RESEND_API_KEY);
 
         // 1. Fetch the Top 5 most recent AI news
@@ -38,35 +44,35 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: 'Failed to fetch subscribers' }, { status: 500 });
         }
 
+        // Only send to the admin/test user during Resend Onboarding to avoid 403 Forbidden crashes
         const emails = users.map(u => u.email).filter(Boolean) as string[];
 
-        if (emails.length === 0) {
-            return NextResponse.json({ message: 'No subscribers found. Skipping.' });
+        // Ensure the recipient is the verified Resend email to prevent batch failure
+        const targetEmail = emails.includes('cedatabi@gmail.com') ? 'cedatabi@gmail.com' : emails[0];
+
+        if (!targetEmail) {
+            return NextResponse.json({ message: 'No valid subscribers' });
         }
 
-        console.log(`[Cron] Assembling newsletter for ${emails.length} subscribers...`);
+        console.log(`[Cron] Assembling agentic newsletter for ${targetEmail}...`);
 
-        // 3. Assemble and dispatch emails using Resend Batch API
-        // This ensures every user gets their own private email (no BBC exposure)
-        const batchPayload = emails.map(email => ({
-            from: 'NexusAI Daily <onboarding@resend.dev>', // Resend testing domain wrapper
-            to: [email],
-            subject: 'NexusAI Daily: Tus 5 noticias clave de IA 🤖',
+        const { data, error: sendError } = await resend.emails.send({
+            from: 'NexusAI Daily <onboarding@resend.dev>',
+            to: [targetEmail],
+            subject: '🚨 Tus 5 noticias clave de IA (Agentic Report) 🤖',
             react: DailyNewsletter({ articles: top5 }) as React.ReactElement,
-        }));
-
-        const { data, error: sendError } = await resend.batch.send(batchPayload);
+        });
 
         if (sendError) {
-            console.error('Resend Error:', sendError);
-            return NextResponse.json({ error: sendError }, { status: 500 });
+            console.error('Resend Error Output:', JSON.stringify(sendError));
+            return NextResponse.json({ error: sendError.message }, { status: 500 });
         }
 
-        console.log(`[Cron] Newsletter successfully dispatched to ${emails.length} users.`);
-        return NextResponse.json({ message: 'Success', recipients: emails.length, data });
+        console.log(`[Cron] Newsletter successfully dispatched to ${targetEmail}.`);
+        return NextResponse.json({ message: 'Success', recipients: 1, data });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Cron job catastrophic error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
     }
 }

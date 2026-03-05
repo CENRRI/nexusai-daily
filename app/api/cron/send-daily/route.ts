@@ -48,11 +48,7 @@ export async function GET(request: Request) {
         const emails = users.map(u => u.email).filter(Boolean) as string[];
 
         // Ensure the recipient is the verified Resend email to prevent batch failure
-        const targetEmail = emails.includes('cedatabi@gmail.com') ? 'cedatabi@gmail.com' : emails[0];
-
-        if (!targetEmail) {
-            return NextResponse.json({ message: 'No valid subscribers' });
-        }
+        const targetEmail = 'cedatabi@gmail.com';
 
         console.log(`[Cron] Assembling agentic newsletter for ${targetEmail}...`);
 

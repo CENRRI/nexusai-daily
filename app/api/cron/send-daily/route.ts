@@ -44,17 +44,15 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: 'Failed to fetch subscribers' }, { status: 500 });
         }
 
-        // Only send to the admin/test user during Resend Onboarding to avoid 403 Forbidden crashes
         const emails = users.map(u => u.email).filter(Boolean) as string[];
 
-        // Ensure the recipient is the verified Resend email to prevent batch failure
-        const targetEmail = 'cedatabi@gmail.com';
+        console.log(`[Cron] Assembling agentic newsletter for ${emails.length} subscribers...`);
 
-        console.log(`[Cron] Assembling agentic newsletter for ${targetEmail}...`);
-
+        // Send to all subscribers via BCC to protect privacy
         const { data, error: sendError } = await resend.emails.send({
-            from: 'onboarding@resend.dev',
-            to: [targetEmail],
+            from: 'NexusAI Daily <newsletter@nexusaidaily.online>',
+            to: ['newsletter@nexusaidaily.online'],
+            bcc: emails,
             subject: '🚨 Tus 5 noticias clave de IA (Agentic Report) 🤖',
             react: DailyNewsletter({ articles: top5 }) as React.ReactElement,
         });
@@ -64,7 +62,7 @@ export async function GET(request: Request) {
             return NextResponse.json({ error: sendError.message }, { status: 500 });
         }
 
-        console.log(`[Cron] Newsletter successfully dispatched to ${targetEmail}.`);
+        console.log(`[Cron] Newsletter successfully dispatched to ${emails.length} subscribers.`);
         return NextResponse.json({ message: 'Success', recipients: 1, data });
 
     } catch (error: any) {
